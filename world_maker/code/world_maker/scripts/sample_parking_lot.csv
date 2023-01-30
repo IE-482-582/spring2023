@@ -1,0 +1,11 @@
+% x,y,type,length,angle,description (optional)
+2,0,lane,4,0,
+2,2,lane,4,0,
+2,1,car,0,90,NOTE: The car model appears to be 90-degrees rotated.
+2,4,lane,4,0,
+2,3,car,0,270,NOTE: The car model appears to be 90-degrees rotated.
+-0.125,2,curb,4,90,
+6,4,lane,8,90,
+8,4,lane,8,90,
+7,2,car,0,0,NOTE: The car model appears to be 90-degrees rotated.
+7,4,lane,2,0,

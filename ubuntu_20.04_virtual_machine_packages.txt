@@ -1,0 +1,193 @@
+# Notes on the Fall 21 Ubuntu VirtualBox Image
+
+- The `ubuntu_2004_vm_F21.ova` appliance was compiled on Dell XPS, running Ubuntu 18.04.  The VirtualBox appliance has the following properties:
+    - Ubuntu 20.04 (Focal Fossa)
+    - ROS Noetic Ninjemys
+    - Python 3.8
+    
+- I used the steps below to install the software on a fresh Ubuntu installation:
+
+--- 
+
+## Install git
+sudo apt-get install git
+
+--- 
+
+## Install ROS
+- from http://wiki.ros.org/noetic/Installation/Ubuntu
+
+```
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+
+sudo apt install curl # if you haven't already installed curl
+
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+
+sudo apt update
+
+sudo apt install ros-noetic-desktop-full
+
+sudo apt install python3-rosdep
+sudo rosdep init
+rosdep update
+		
+echo "" >> ${HOME}/.bashrc
+echo "# Set ROS Environment Variables:" >> ${HOME}/.bashrc
+echo "source /opt/ros/noetic/setup.bash" >> ${HOME}/.bashrc
+source /opt/ros/noetic/setup.bash
+source ${HOME}/.bashrc
+
+sudo apt-get install python3-rosinstall
+			
+# Create catkin workspace:
+mkdir -p ${HOME}/catkin_ws/src
+		
+# Build the workspace:
+cd ${HOME}/catkin_ws
+catkin_make
+
+# Edit .bashrc again:
+# Set ROS Environment Variables:
+echo "source ~/catkin_ws/devel/setup.bash" >> ${HOME}/.bashrc
+source ${HOME}/catkin_ws/devel/setup.bash
+source ${HOME}/.bashrc
+
+sudo apt-get clean
+
+sudo apt-get install ros-noetic-rosbridge-suite
+```
+
+
+## Install Turtlebot3
+- See https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start/
+- Install Dependent ROS 1 Packages
+    ```
+    sudo apt-get install ros-noetic-joy ros-noetic-teleop-twist-joy \
+      ros-noetic-teleop-twist-keyboard ros-noetic-laser-proc \
+      ros-noetic-rgbd-launch ros-noetic-rosserial-arduino \
+      ros-noetic-rosserial-python ros-noetic-rosserial-client \
+      ros-noetic-rosserial-msgs ros-noetic-amcl ros-noetic-map-server \
+      ros-noetic-move-base ros-noetic-urdf ros-noetic-xacro \
+      ros-noetic-compressed-image-transport ros-noetic-rqt* ros-noetic-rviz \
+      ros-noetic-gmapping ros-noetic-navigation ros-noetic-interactive-markers
+    ```
+    
+## Install TurtleBot3 via Debian Packages:
+```
+sudo apt install ros-noetic-dynamixel-sdk
+sudo apt install ros-noetic-turtlebot3-msgs
+sudo apt install ros-noetic-turtlebot3
+```
+
+## Install Simulation Package
+- https://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/
+```
+cd ~/catkin_ws/src/
+git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
+cd ~/catkin_ws && catkin_make
+```
+
+
+## Test the installation:
+```
+export TURTLEBOT3_MODEL=burger
+roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch
+```
+
+---
+
+## Install OpenCV 
+- from https://www.pyimagesearch.com/2018/09/19/pip-install-opencv/
+
+```
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo apt-get install python3-dev
+sudo apt-get install libgl1-mesa-glx
+
+# Install pip
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python3 get-pip.py
+
+sudo pip install opencv-contrib-python
+```
+
+--- 
+
+## Other useful Python stuff
+
+```
+sudo apt-get --yes install filezilla
+sudo apt-get --yes install geany
+sudo apt-get --yes install gimp
+sudo apt-get --yes install meld
+sudo apt-get --yes install kazam
+sudo apt-get --yes install retext
+```
+
+- dronekit
+```
+pip install dronekit
+pip install dronekit-sitl
+```
+
+```
+pip install --upgrade ipython
+pip install --upgrade numpy scipy matplotlib scikit-learn pandas pillow
+pip install --upgrade jupyter
+pip install --upgrade veroviz
+````
+
+```
+pip install --upgrade pygame
+pip install --upgrade pyserial
+pip install --upgrade xbee
+pip install --upgrade pyglet
+pip install --upgrade netifaces
+pip install --upgrade rpy2			# Still valid/useful?  Does NOT work for Python 2	
+pip install --upgrade geocoder
+```
+
+
+change background
+
+Clear history
+
+Undo what happened here:
+	student@vm:~/Downloads/spring2023$ git commit -m "initial upload"
+
+	*** Please tell me who you are.
+
+	Run
+
+	  git config --global user.email "you@example.com"
+	  git config --global user.name "Your Name"
+
+	to set your account's default identity.
+	Omit --global to set the identity only in this repository.
+
+	fatal: unable to auto-detect email address (got 'student@vm.(none)')
+	student@vm:~/Downloads/spring2023$ git config --global user.email "cmurray3@buffalo.edu"
+	student@vm:~/Downloads/spring2023$ git config user.name "Murray"
+	student@vm:~/Downloads/spring2023$ 
+
+
+ Committer: Chase Murray <murray@Chases-MBP.fios-router.home>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 32 files changed, 387 insertions(+), 385 deletions(-)
+ rewrite 07_Building_Maps/README.md (98%)
+ rewrite 08_Navigating_Maps/README.md (95%)
+ create mode 100644 ubuntu_20.04_virtual_machine_packages.txt

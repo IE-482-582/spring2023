@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Turtlebot Teleop Demo</title>
+	
+<!-- Use correct character set. -->
+<meta charset="utf-8">
+<!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
+
+<!--The following 2 lines will import Cesium scripts from their website:-->
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.74/Build/Cesium/Cesium.js"></script>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.74/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+<!--You could use your local scripts instead:-->
+<!--
+<link rel="stylesheet" href="../Build/Cesium/Widgets/widgets.css" />
+<script src="../Build/Cesium/Cesium.js"></script>
+-->
+
+<script type="text/javascript" src="../roslib/eventemitter2.min.js"></script>
+<script type="text/javascript" src="../roslib/roslib.min.js"></script>
+
+<script type="text/javascript">
+	// FIXME -- You'll need to update the IP address for your system.
+	var ROS_IP = 'ws://192.304.5.284:9090';  // ws://localhost:9090/'; 
+</script>
+
+</head>
+
+<body>
+
+<center>
+<canvas id="rgb-canvas" width="640" height="480"></canvas>
+<table>
+	<tr>
+		<td></td>
+		<td><center><button onClick="pubTwist('forward');">forward</button></center></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><center><button onClick="pubTwist('left');">left</button></center></td>
+		<td><center><button onClick="pubTwist('stop');">STOP</button></center></td>
+		<td><center><button onClick="pubTwist('right');">right</button></center></td>
+	</tr>	
+	<tr>
+		<td></td>
+		<td><center><button onClick="pubTwist('backward');">backward</button></center></td>
+		<td></td>
+	</tr>
+</table>
+</center>
+
+<script type="text/javascript">
+// ROS Variables:
+// --------------
+	// NOTE:  The URL for the Website is:
+	// http://192.168.1.175:8080/turtlebot	(not :9090, and not http*s*)
+	
+	var ros = new ROSLIB.Ros({
+		url : ROS_IP
+		// url : 'ws://localhost:9090'
+		// url : 'ws://192.168.1.175:9090'
+	});
+		
+
+// ROS Functions:
+// --------------
+	ros.on('connection', function() {
+		console.log('Connected to websocket server.');
+	});
+	
+	ros.on('error', function(error) {
+		console.log('Error connecting to websocket server: ', error);
+	});
+	
+	ros.on('close', function() {
+		console.log('Connection to websocket server closed.');
+		// I don't think this ever executes.
+	});
+
+
+	// Define a publisher for twist commands:
+	var post_teleop_msg = new ROSLIB.Topic({
+		ros : ros,
+		name : 'cmd_vel_mux/input/teleop', 
+		messageType : 'geometry_msgs/Twist'		
+	});	
+
+	// Define a function that will publish twist commands:
+	function pubTwist(direction)  {
+		// Send ROS Message
+		var cmd = {};
+		if (direction == 'forward')  {
+			cmd = {
+				linear  : {x: 1.0, y: 0.0, z: 0.0},
+				angular : {x: 0.0, y: 0.0, z: 0.0}}
+		}  else if (direction == 'left')  {
+			cmd = {
+				linear  : {x: 0.0, y: 0.0, z:  0.0},
+				angular : {x: 0.0, y: 0.0, z:  1.0}}
+		}  else if (direction == 'right')  {
+			cmd = {
+				linear  : {x: 0.0, y: 0.0, z:  0.0},
+				angular : {x: 0.0, y: 0.0, z: -1.0}}
+		}  else if (direction == 'backward')  {
+			cmd = {
+				linear  : {x: -1.0, y:  0.0, z: 0.0},
+				angular : {x:  0.0, y:  0.0, z: 0.0}}
+		}  else  {
+			cmd = {
+				linear  : {x: 0.0, y:  0.0, z: 0.0},
+				angular : {x: 0.0, y:  0.0, z: 0.0}}
+		}
+		var myTwistCmd = new ROSLIB.Message(cmd);
+
+		post_teleop_msg.publish(myTwistCmd);		
+	}
+	// -----------------------
+		
+	// Define a camera topic:	
+	var listen_camera = new ROSLIB.Topic({
+		ros : ros,
+		// name: 'camera/rgb/image_raw',
+		// messageType : 'sensor_msgs/Image'
+		name: 'camera/rgb/image_raw/compressed', 
+		messageType : 'sensor_msgs/CompressedImage'
+	});
+	
+	// Subscribe to the camera topic:
+	var canvas = document.getElementById('rgb-canvas');	
+	listen_camera.subscribe(function(message) {
+		// swarmDrawGoals([message.swarm1, message.swarm2, message.swarm3, message.swarm4]);
+		ctx = canvas.getContext('2d');
+		var image = new Image();
+		image.onload = function()  {
+			ctx.drawImage(image, 0, 0);
+		};
+		image.src = `data:image/png;base64,${message.data}`;
+	});
+
+</script>
+</body>
+</html>

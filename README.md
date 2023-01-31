@@ -2,7 +2,7 @@
 
 --- 
 
-- [Course Syllabus](IE_482-582_Syllabus_Spring_2023_.pdf)
+- [Course Syllabus](IE_482-582_Syllabus_Spring_2023.pdf)
 
 --- 
 

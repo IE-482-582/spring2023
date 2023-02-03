@@ -51,20 +51,6 @@ These Mac instructions were adpated from https://www.youtube.com/watch?v=cNDR6Z2
         
 **NOTE:** I'm not sure if Steps 3 and 4 will be necessary.  We'll update this guide as necessary.
 
-
-FIXME -- Is docker daemon running?
-Just open the docker desktop app
-
----
- 			
- 			
- start docker
- 	
- docker run -it -e DISPLAY=192.168.32.28:0 --name ubuntu ubuntu
- 
- 
- 
- 
  
 ---
 
@@ -106,56 +92,51 @@ Before continuing, I suggest you check out [the difference between a Docker "ima
     
 3.  Let's now build our `ub_ros_image_v2023-02-02` **image**:
     ```
-    # cd [place where Dockerfile exists]
-    # docker build --platform=linux/amd64 -t ub_ros_image_v2023-02-02 .     # the period at the end is not a typo
-    ```
-    ```
     docker build --platform=linux/amd64 -t ub_ros_image_v2023-02-02 https://raw.githubusercontent.com/IE-482-582/spring2023/main/docker/v2023-02-02/Dockerfile
     ```
     
-    - See https://docs.docker.com/build/building/multi-platform/
+    - See https://docs.docker.com/build/building/multi-platform/ for more info
 
 
 ## Create a named **container** from our image.
 
 We can create multiple containers from the same image.  For now, we just need to create one container, named `ub_ros_container_v2023-02-02`.
 
+The procedure for creating containers is going to depend on your operating system.
+
 ### Windows Host
+```
 docker create -t \
 	--privileged \
 	--platform=linux/amd64 \
 	--env="DISPLAY=host.docker.internal:0.0" \
 	--net=host \
 	--name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 \
+```
+- FIXME -- Need volume info/bridge
+- FIXME -- Add local linked/bridged volume
 
-    - FIXME -- Need volume info/bridge
-    
+
 ### Mac Host
+```
 docker create -t \
 	--privileged \
 	--platform=linux/amd64 \
-	--env=“DISPLAY” \
+	--env="DISPLAY" \
 	-v /tmp/.X11-unix:/tmp/.X11-unix:rw  \
 	--net=host \
 	--name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 
-
-
-#docker create -t \
-#	--privileged \
-#	--platform=linux/amd64 \
-#	--env="DISPLAY=host.docker.internal:0.0" \
-#	--net=host \
-#	--name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 \
-
+```
+- FIXME -- Should it be `--env="DISPLAY=host.docker.internal:0.0" \`?
+- FIXME -- Add local linked/bridged volume
 
 
 ### Linux Host
+```
 #  xhost +local:root			# DANGEROUS!!!
 export containerId=$(docker ps -aqf "name=ub_ros_container_v2023-02-02")
 # xhost +local:`docker inspect --format='{{ .Config.Hostname }}' $containerId`
 xhost +local:$containerId
-
-
 
 XAUTH=/tmp/.docker.xauth
 
@@ -167,96 +148,50 @@ docker create -t \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --env="XAUTHORITY=$XAUTH" \
     --volume="$XAUTH:$XAUTH" \
-	--name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 
-
-# export containerId=$(docker ps -l -q)
-#    osrf/ros:noetic-desktop-full \
-#    # rosrun turtlesim turtlesim_node
-#    roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch
-
-
-
-docker create -t \
-	--privileged \
-	--platform=linux/amd64 \
-	--env="DISPLAY" \
-    --env="QT_X11_NO_MITSHM=1" \
-	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"  \
-	--net=host \
-	--name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 
-
-docker create -t \
-    --privileged \
-    --platform=linux/amd64 \
-    --env="DISPLAY" \
-    --env="QT_X11_NO_MITSHM=1" \
     --net=host \
-    # --name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 \
-    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-    osrf/ros:noetic-desktop-full \
-    rqt
-export containerId=$(docker ps -l -q)
-
-docker run -it \
-    --privileged \
-    --platform=linux/amd64 \
-    --env="DISPLAY" \
-    --env="QT_X11_NO_MITSHM=1" \
-    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-    osrf/ros:noetic-desktop-full \
-    rqt
-
+    --name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 
 ```
-docker create -t --privileged --platform=linux/amd64 -v ~/Downloads/tmpdocker:/root/share --net=host --name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02
-```
+- FIXME -- Add local linked/bridged volume
+    - `-v ~/Downloads/tmpdocker:/root/share` 
+- FIXME -- Do we need platform in BUILD or CREATE (or **both**)?
 
-FIXME -- Do we need platform in BUILD or CREATE (or both)?
-
-docker create -t --privileged --net=host -v /home/root/catkin_ws/src:/root/catkin_ws/src --name voxl-soar rosnoetic-mavsdk-python
 
 - Double check that the container exists:
     ```
     docker ps -a
     ```
     
-Run our **container**:
+## Run our **container**:
 
-# LINUX:
+### Windows Host:
+FIXME
+
+### Mac Host:
+FIXME
+
+### Linux Host:
 ```
 # docker exec -it --privileged -e DISPLAY=host.docker.internal:0.0 ub_ros_container_v2023-02-02 bash
 docker exec -it --privileged ub_ros_container_v2023-02-02 bash
 ```
 
+---
 
-```
-# docker run -it ub_ros_image_v2023-02-2 bash
-```
-This will give us an interactive terminal window running the container.
-(no, this actually creates a container)
+## Links:
 
+- https://github.com/noshluk2/ros1_wiki/blob/main/docker/commands.md#windows :
+    ```
+    docker run -it --name r2_pathplanning_container -e DISPLAY=host.docker.internal:0.0 -e haiderabbasi333/ros2-pathplanning-course:1 bash
+    ```
+- ???
+    ```
+    -e DISPLAY=192.168.1.1:0
+    ```
+- http://wiki.ros.org/docker/Tutorials/GUI
+- https://docs.docker.com/engine/reference/commandline/run/
+- https://stackoverflow.com/questions/41485217/mount-current-directory-as-a-volume-in-docker-on-windows-10
 
-https://github.com/noshluk2/ros1_wiki/blob/main/docker/commands.md#windows :
-docker run -it --name r2_pathplanning_container -e DISPLAY=host.docker.internal:0.0 -e haiderabbasi333/ros2-pathplanning-course:1 bash
-
--e DISPLAY=192.168.1.1:0
-
-
-
-http://wiki.ros.org/docker/Tutorials/GUI
-
-https://docs.docker.com/engine/reference/commandline/run/
-
-
-https://stackoverflow.com/questions/41485217/mount-current-directory-as-a-volume-in-docker-on-windows-10
-
-
-
-
-
-docker create -t --privileged --net=host -v /home/root/catkin_ws/src:/root/catkin_ws/src --name voxl-soar rosnoetic-mavsdk-python
-
-
-When you're done with your interactive session, simply type `exit` in the terminal window.
+- When you're done with your interactive session, simply type `exit` in the terminal window.
 
 
 

@@ -88,8 +88,8 @@ RUN echo "export TURTLEBOT3_MODEL=waffle_pi" >> ${HOME}/.bashrc
 RUN apt-get install ros-noetic-husky-simulator ros-noetic-husky-desktop -y
 
 # Include IE 482/582 repository
-RUN /bin/bash -c "cd ~/catkin_ws/src; git clone https://github.com/IE-482-582/spring2023.git" 
-RUN /bin/bash -c ". /opt/ros/noetic/setup.bash; cd ~/catkin_ws; catkin_make"
+RUN mkdir -p ${HOME}/Documents
+RUN /bin/bash -c "cd ~/Documents; git clone https://github.com/IE-482-582/spring2023.git" 
 
 # Export Gazebo environment variables
 RUN echo "" >> ${HOME}/.bashrc

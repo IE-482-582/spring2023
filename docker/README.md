@@ -131,9 +131,8 @@ docker create -t \
 	--env="DISPLAY=host.docker.internal:0.0" \	
 	-e LIBGL_ALWAYS_INDIRECT=0 \    
 	--net=host \
-	--name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 \
+	--name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 
 ```
-- FIXME -- Need volume info/bridge
 - FIXME -- Add local linked/bridged volume
 
 

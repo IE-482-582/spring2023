@@ -1,8 +1,18 @@
+This document describes how to run Ubuntu 20.04 / ROS Noetic in Docker. This is aimed at the IE 482/582 course.
 
+There are 4 key sections:
+1. Installing the Docker software
+2. Building the course Docker Image
+3. Creating a Docker Container
+4. Running the Docker Container
+5. Links
+6. Helpful Docker Commands
 
-# Installation
+---
 
-## Windows
+# 1. Installing Docker
+
+## 1.1 Windows
 
 These Windows instructions were adapted from the following sources:
 - http://wiki.ros.org/docker/Tutorials/Docker
@@ -18,7 +28,7 @@ These Windows instructions were adapted from the following sources:
     - When prompted, be sure to *reboot your computer*.
  
  
-## Mac
+## 1.2 Mac
 
 These Mac instructions were adpated from https://www.youtube.com/watch?v=cNDR6Z24KLM
 
@@ -54,7 +64,7 @@ These Mac instructions were adpated from https://www.youtube.com/watch?v=cNDR6Z2
  
 ---
 
-# Building the course Docker image
+# 2. Building the course Docker image
 
 Before continuing, I suggest you check out [the difference between a Docker "image" and a Docker "container"](https://stackoverflow.com/questions/21498832/in-docker-whats-the-difference-between-a-container-and-an-image).  Containers are like instances of an image.  Each image may be used to create multiple containers. Images are read-only. 
 
@@ -97,14 +107,15 @@ Before continuing, I suggest you check out [the difference between a Docker "ima
     
     - See https://docs.docker.com/build/building/multi-platform/ for more info
 
+---
 
-## Create a named **container** from our image.
+# 3. Create a named **container** from our image.
 
 We can create multiple containers from the same image.  For now, we just need to create one container, named `ub_ros_container_v2023-02-02`.
 
 The procedure for creating containers is going to depend on your operating system.
 
-### Windows Host
+## 3.1 Windows Host
 ```
 docker create -t \
 	--privileged \
@@ -117,7 +128,7 @@ docker create -t \
 - FIXME -- Add local linked/bridged volume
 
 
-### Mac Host
+## 3.2 Mac Host
 ```
 docker create -t \
 	--privileged \
@@ -131,7 +142,7 @@ docker create -t \
 - FIXME -- Add local linked/bridged volume
 
 
-### Linux Host
+## 3.3 Linux Host
 ```
 #  xhost +local:root			# DANGEROUS!!!
 export containerId=$(docker ps -aqf "name=ub_ros_container_v2023-02-02")
@@ -160,8 +171,11 @@ docker create -t \
     ```
     docker ps -a
     ```
-    
-## Run our **container**:
+
+---
+
+
+# 4. Run our **container**:
 
 ### Windows Host:
 FIXME
@@ -177,7 +191,9 @@ docker exec -it --privileged ub_ros_container_v2023-02-02 bash
 
 ---
 
-## Links:
+# 5. Links:
+
+- https://github.com/noshluk2/ros1_wiki/blob/main/docker/commands.md
 
 - https://github.com/noshluk2/ros1_wiki/blob/main/docker/commands.md#windows :
     ```
@@ -198,7 +214,7 @@ docker exec -it --privileged ub_ros_container_v2023-02-02 bash
 
 ---
 
-# Useful Docker Commands
+# 6. Useful Docker Commands
 
 ## Containers
  
@@ -249,4 +265,3 @@ docker rmi <image id>
  
  --- 
  
- https://github.com/noshluk2/ros1_wiki/blob/main/docker/commands.md

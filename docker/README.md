@@ -115,12 +115,21 @@ We can create multiple containers from the same image.  For now, we just need to
 
 The procedure for creating containers is going to depend on your operating system.
 
+
+docker create -t \
+    --privileged \
+    -e DISPLAY=host.docker.internal:0.0 \
+   
+	--net=host \
+	--name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 \
+
 ## 3.1 Windows Host
 ```
 docker create -t \
 	--privileged \
 	--platform=linux/amd64 \
-	--env="DISPLAY=host.docker.internal:0.0" \
+	--env="DISPLAY=host.docker.internal:0.0" \	
+	-e LIBGL_ALWAYS_INDIRECT=0 \    
 	--net=host \
 	--name ub_ros_container_v2023-02-02 ub_ros_image_v2023-02-02 \
 ```
@@ -174,6 +183,9 @@ docker create -t \
 
 ## 4.1 Windows Host:
 FIXME
+```
+docker exec -it --privileged ub_ros_container_v2023-02-02 bash
+```
 
 ## 4.2 Mac Host:
 FIXME

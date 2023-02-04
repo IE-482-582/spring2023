@@ -1,11 +1,11 @@
 This document describes how to run Ubuntu 20.04 / ROS Noetic in Docker. This is aimed at the IE 482/582 course.
 
-There are 4 key sections:
+There are 6 sections:
 1. Installing the Docker software
 2. Building the course Docker Image
 3. Creating a Docker Container
 4. Running the Docker Container
-5. Links
+5. Miscellaneous Links
 6. Helpful Docker Commands
 
 ---

@@ -1,5 +1,8 @@
 FROM osrf/ros:noetic-desktop-full
 
+# Adapted from
+# https://github.com/IE-482-582/spring2023/issues/2
+
 RUN apt-get update
 RUN apt-get install cmake build-essential colordiff git doxygen -y
 RUN apt-get install python3 python3-pip -y
@@ -73,14 +76,25 @@ RUN apt install ros-noetic-turtlebot3  -y
 RUN /bin/bash -c "cd ~/catkin_ws/src; git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git" 
 RUN /bin/bash -c ". /opt/ros/noetic/setup.bash; cd ~/catkin_ws; catkin_make"
 
+## Add gazebo setup
+RUN echo "source /usr/share/gazebo/setup.bash --extend" >> ${HOME}/.bashrc
 
-## Test the installation:
-# export TURTLEBOT3_MODEL=waffle_pi
-# roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch
+## Add environment variable for turtlebot simulations
+RUN echo "" >> ${HOME}/.bashrc
+RUN echo "export TURTLEBOT3_MODEL=waffle_pi" >> ${HOME}/.bashrc
 
+# Install Husky packages
+# https://docs.clearpathrobotics.com/docs/robots/outdoor_robots/husky/tutorials_husky#using-husky
+RUN apt-get install ros-noetic-husky-simulator ros-noetic-husky-desktop -y
 
-# https://github.com/IE-482-582/spring2023/issues/2
+# Include IE 482/582 repository
+RUN /bin/bash -c "cd ~/catkin_ws/src; git clone https://github.com/IE-482-582/spring2023.git" 
+RUN /bin/bash -c ". /opt/ros/noetic/setup.bash; cd ~/catkin_ws; catkin_make"
 
-# FIXME -- Add Husky?
+# Export Gazebo environment variables
+RUN echo "" >> ${HOME}/.bashrc
+RUN echo "export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/usr/share/gazebo/../../share/gazebo-11/models" >> ${HOME}/.bashrc
+
 # FIXME -- Add Clover?
-
+# FIXME -- Add Dobot?  http://wiki.ros.org/Robots/Dobot/Magician
+# FIXME -- Add UR5?  https://github.com/UniversalRobots/Universal_Robots_ROS_Driver

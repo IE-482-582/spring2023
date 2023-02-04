@@ -182,7 +182,10 @@ docker create -t \
 # 4. Run our **container**:
 
 ## 4.1 Windows Host:
-FIXME
+1. Open `XLaunch` application.  
+    - Set **Display Number** to `0`
+
+
 ```
 docker exec -it --privileged ub_ros_container_v2023-02-02 bash
 ```

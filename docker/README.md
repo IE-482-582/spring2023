@@ -177,17 +177,30 @@ docker create -t \
 
 # 4. Run our **container**:
 
-### Windows Host:
+## 4.1 Windows Host:
 FIXME
 
-### Mac Host:
+## 4.2 Mac Host:
 FIXME
 
-### Linux Host:
+## 4.3 Linux Host:
 ```
 # docker exec -it --privileged -e DISPLAY=host.docker.internal:0.0 ub_ros_container_v2023-02-02 bash
 docker exec -it --privileged ub_ros_container_v2023-02-02 bash
 ```
+
+## 4.4 Test the Installation
+1. Just try to run Gazebo:
+    ```
+    gazebo --verboze
+    ```
+    If you don't get any errors, `Ctrl-C` will close the Gazebo window.
+
+2. Open the `turtlebot3` simulation
+    ```
+    export TURTLEBOT3_MODEL=waffle_pi
+    roslaunch turtlebot3_gazebo turtlebot3_empty_world.launch
+    ```
 
 ---
 

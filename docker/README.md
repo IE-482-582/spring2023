@@ -144,11 +144,6 @@ docker create -t \
 
 ## 3.3 Linux Host
 ```
-#  xhost +local:root			# DANGEROUS!!!
-export containerId=$(docker ps -aqf "name=ub_ros_container_v2023-02-02")
-# xhost +local:`docker inspect --format='{{ .Config.Hostname }}' $containerId`
-xhost +local:$containerId
-
 XAUTH=/tmp/.docker.xauth
 
 docker create -t \
@@ -183,11 +178,30 @@ FIXME
 ## 4.2 Mac Host:
 FIXME
 
-## 4.3 Linux Host:
 ```
-# docker exec -it --privileged -e DISPLAY=host.docker.internal:0.0 ub_ros_container_v2023-02-02 bash
+docker start ub_ros_container_v2023-02-02
+
+# containerId=$(docker ps -l -q)
+containerId=$(docker ps -aqf "name=ub_ros_container_v2023-02-02")
+
+xhost +local:$containerId
+
 docker exec -it --privileged ub_ros_container_v2023-02-02 bash
 ```
+
+## 4.3 Linux Host:
+```
+docker start ub_ros_container_v2023-02-02
+
+# containerId=$(docker ps -l -q)
+containerId=$(docker ps -aqf "name=ub_ros_container_v2023-02-02")
+
+xhost +local:$containerId
+
+docker exec -it --privileged ub_ros_container_v2023-02-02 bash
+```
+
+---
 
 ## 4.4 Test the Installation
 1. Just try to run Gazebo:
@@ -232,32 +246,32 @@ docker exec -it --privileged ub_ros_container_v2023-02-02 bash
 ## Containers
  
 - List all containers:
-```
-docker ps -a
-``` 
+   ```
+   docker ps -a
+   ``` 
  
 - Stop a running container
-```
-docker stop <container name> 
-```
+    ```
+    docker stop <container name> 
+    ```
 
-- Delete (remove) a single container
-```
-docker rm <container id or container name>
-```
+ - Delete (remove) a single container
+     ```
+     docker rm <container id or container name>
+     ```
 
 
 - Start a stopped/existing container
-```
-docker start <container id>
-```
+    ```
+    docker start <container id>
+    ```
 
 - Create an interactive container from an image 
-```
-docker run -it <image name>
-```
-
-**NOTE:** Each time you do this, you create a new container.  This probably isn't what you actually want to do.
+    ```
+    docker run -it <image name>
+    ```
+    
+    **NOTE:** Each time you do this, you create a new container.  This probably isn't what you actually want to do.
 
 
 
@@ -265,14 +279,14 @@ docker run -it <image name>
 ## Images
 
 - List all images
-```
-docker images -a
-```
+    ```
+    docker images -a
+    ```
 
 - Delete an image:
-```
-docker rmi <image id>
-```
+    ```
+    docker rmi <image id>
+    ```
  
  
  

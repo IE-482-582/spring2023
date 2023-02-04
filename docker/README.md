@@ -14,10 +14,6 @@ There are 4 key sections:
 
 ## 1.1 Windows
 
-These Windows instructions were adapted from the following sources:
-- http://wiki.ros.org/docker/Tutorials/Docker
-- https://www.youtube.com/watch?v=qWuudNxFGOQ&t=146s
-
 1. Download and install `xlaunch` for Windows:
     - https://sourceforge.net/projects/vcxsrv/
     
@@ -26,11 +22,13 @@ These Windows instructions were adapted from the following sources:
     - You will need to use the "WSL 2 backend" option
     - You can skip the tutorial if you wish.
     - When prompted, be sure to *reboot your computer*.
- 
+
+
+- *These Windows instructions were adapted from the following sources:*
+    - http://wiki.ros.org/docker/Tutorials/Docker
+    - https://www.youtube.com/watch?v=qWuudNxFGOQ&t=146s
  
 ## 1.2 Mac
-
-These Mac instructions were adpated from https://www.youtube.com/watch?v=cNDR6Z24KLM
 
 1. Download and install `xquartz`:
     - https://www.xquartz.org/
@@ -61,6 +59,7 @@ These Mac instructions were adpated from https://www.youtube.com/watch?v=cNDR6Z2
         
 **NOTE:** I'm not sure if Steps 3 and 4 will be necessary.  We'll update this guide as necessary.
 
+- *These Mac instructions were adpated from https://www.youtube.com/watch?v=cNDR6Z24KLM*
  
 ---
 

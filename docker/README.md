@@ -101,7 +101,7 @@ Before continuing, I suggest you check out [the difference between a Docker "ima
     
 3.  Let's now build our `ub_ros_image_v2023-02-02` **image**:
     ```
-    docker build --platform=linux/amd64 -t ub_ros_image_v2023-02-02 https://raw.githubusercontent.com/IE-482-582/spring2023/main/docker/v2023-02-02/Dockerfile
+    docker build --platform=linux/amd64 -t ub_ros_image_v2023-02-02 https://raw.githubusercontent.com/IE-482-582/spring2023/murray/docker/v2023-02-02/Dockerfile
     ```
     
     - See https://docs.docker.com/build/building/multi-platform/ for more info

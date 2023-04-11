@@ -6,11 +6,11 @@ from sensor_msgs.msg import Image
 class Follower:
 	def __init__(self):
 		self.bridge = cv_bridge.CvBridge()
-		cv2.namedWindow("Original", 1)
-		cv2.namedWindow("YellowMask", 1)
-		cv2.namedWindow("WhiteMask", 1)
-		cv2.namedWindow("HSV", 1)
-		cv2.namedWindow("Visor", 1)
+		# cv2.namedWindow("Original", 1)
+		# cv2.namedWindow("YellowMask", 1)
+		# cv2.namedWindow("WhiteMask", 1)
+		# cv2.namedWindow("HSV", 1)
+		# cv2.namedWindow("Visor", 1)
 		
 		# Open two files for writing:
 		# 1) We'll store data for the entire image (640x480):

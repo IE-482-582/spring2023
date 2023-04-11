@@ -6,8 +6,8 @@ from sensor_msgs.msg import Image
 class Follower:
 	def __init__(self):
 		self.bridge = cv_bridge.CvBridge()
-		cv2.namedWindow("window1", 1)
-		cv2.namedWindow("window2", 1)
+		# cv2.namedWindow("window1", 1)
+		# cv2.namedWindow("window2", 1)
 		
 		self.image_sub = rospy.Subscriber('camera/rgb/image_raw', 
 									  Image, self.image_callback)

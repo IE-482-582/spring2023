@@ -7,7 +7,7 @@ from geometry_msgs.msg import Twist
 class Follower:
 	def __init__(self):
 		self.bridge = cv_bridge.CvBridge()
-		cv2.namedWindow("window", 1)
+		# cv2.namedWindow("window", 1)
 		self.image_sub = rospy.Subscriber('/camera/rgb/image_raw', 
 										  Image, self.image_callback)
 		self.cmd_vel_pub = rospy.Publisher('/cmd_vel_mux/input/teleop',
